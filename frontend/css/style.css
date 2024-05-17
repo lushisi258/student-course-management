@@ -1,0 +1,76 @@
+/* 侧边栏 */
+.sidebar {
+  height: 100%;
+  width: 20%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+/* 侧边栏内容 */
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+
+.main {
+  /* 为侧边栏留出空间 */
+  margin-left: 20%;
+}
+
+/* 定义按钮的大小和样式 */
+.main button {
+  position: absolute;
+  /* 按钮定位 */
+  border-radius: 30px;
+  /* 按钮圆角 */
+  background-color: #4CAF50;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 10%;
+  /* 按钮文字样式 */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 按钮悬停时的状态 */
+.main button:hover {
+  opacity: 0.8;
+}
+
+/* 定义查询按钮的位置 */
+.main .query-button {
+  top: 50%;
+  left: 35%;
+}
+
+/* 定义录入按钮的位置 */
+.main .add-button {
+  top: 50%;
+  left: 75%;
+}
+
+/* 定义输入框的格式 */
+.main input[type=text] {
+  width: 80%;
+  position: relative;
+  display: block;
+  left:10%;
+  margin-top: 15%;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}

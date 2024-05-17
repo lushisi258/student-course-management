@@ -13,7 +13,7 @@ class StudentForm(FlaskForm):
     submit = SubmitField('Submit')
 
 # 创建成绩表单，用于录入新的成绩信息
-class GradeForm(FlaskForm):
+class ScoreForm(FlaskForm):
     student_id = StringField('Student ID', validators=[DataRequired()])
     course_id = StringField('Course ID', validators=[DataRequired()])
     score = StringField('Score', validators=[DataRequired()])
