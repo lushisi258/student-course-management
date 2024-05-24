@@ -9,7 +9,9 @@ class CourseForm(FlaskForm):
 
 # 创建学生表单，用于录入新的学生信息
 class StudentForm(FlaskForm):
+    id = StringField('Student ID', validators=[DataRequired()])
     name = StringField('Student Name', validators=[DataRequired()])
+    register_year = StringField('Register Year', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 # 创建成绩表单，用于录入新的成绩信息

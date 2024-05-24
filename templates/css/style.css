@@ -63,13 +63,25 @@
   left: 75%;
 }
 
-/* 定义输入框的格式 */
-.main input[type=text] {
+/* 定义id输入框的格式 */
+.main .input-id{
   width: 80%;
   position: relative;
   display: block;
   left:10%;
-  margin-top: 15%;
+  margin-top: 5%;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* 定义姓名输入框的格式 */
+.main .input-name{
+  width: 80%;
+  position: relative;
+  display: block;
+  left:10%;
+  margin-top: 5%;
   padding: 12px 20px;
   border: 1px solid #ccc;
   box-sizing: border-box;

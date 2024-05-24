@@ -4,11 +4,11 @@
 <head>
   <title>学生信息管理</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/student.css">
   <script src="js/student.js"></script>
 </head>
 
 <body>
-
   <!-- 侧边栏 -->
   <div class="sidebar">
     <a href="index.html">首页</a>
@@ -16,8 +16,10 @@
     <a href="course.html">课程信息管理</a>
     <a href="score.html">成绩信息管理</a>
   </div>
-  <div class="main">
-    <input type="text" id="student-id" placeholder="请输入学生学号">
+  <div class="main" id="student-content">
+    <input type="text" class="input-id" id="student-id" placeholder="请输入学生学号">
+    <input type="text" class="input-name" id="student-name" placeholder="请输入学生姓名">
+
     <button class="query-button" id="query-student">查询学生信息</button>
     <button class="add-button" id="add-student">录入学生信息</button>
   </div>
