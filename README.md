@@ -6,21 +6,28 @@
 
 ## 项目结构
 /scm
-    /.venv
     /app
         __init__.py
         /templates
-            /css
-                course.css
-                grade.css
-                index.css
-                student.css
-            /js
-            course.html
-            grade.html
-            index.html
-            student.html
+            /add
+            /base
+                course.html
+                grade.html
+                index.html
+                student.html
+            /delete
+            /query
         /static
+            /css
+                /add
+                /base
+                    course.css
+                    grade.css
+                    index.css
+                    student.css
+                /delete
+                /query
+            /js
         views.py
         models.py
     config.py

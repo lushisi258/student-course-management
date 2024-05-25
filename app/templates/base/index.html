@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    {% block title %}
+    Index
+    {% endblock %}
+  </title>
+  {% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base/index.css') }}">
+  {% endblock %}
+</head>
+
+<body>
+  <!-- 侧边栏 -->
+  <div class="sidebar">a
+    <a href="/">首页</a>
+    <a href="/student">学生信息管理</a>
+    <a href="/course">课程信息管理</a>
+    <a href="/score">成绩信息管理</a>
+  </div>
+
+  {% block content %}
+  <div class="main">
+    <h1>欢迎来到学生课程信息管理系统</h1>
+  </div>
+  {% endblock %}
+
+</body>
+
+</html>

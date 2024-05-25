@@ -1,0 +1,16 @@
+{% extends "/base/index.html" %}
+
+{% block title %}
+Student
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base/student.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main" id="student-content">
+  <a href="{{ url_for('views.turn_to_add_student') }}" class="button">添加学生信息</a>
+</div>
+{% endblock %}
