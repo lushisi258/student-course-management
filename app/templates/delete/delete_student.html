@@ -13,11 +13,17 @@ Delete Student
 <div class="main" id="delete-student-content">
     <form action="{{ url_for('views.delete_student') }}" method="post">
         <div class="form-group">
-            <label for="student-id">学号</label>
             <input type="text" class="form-control" id="student-id" name="student_id" placeholder="请输入学号">
         </div>
         <div class="form-group">
             <input type="submit" class="form-control" id="btn-delete" value="删除">
         </div>
     </form>
+    <div class="result">
+        {% if result %}
+        <div class="result-item">
+            {{ result }}
+        </div>
+        {% endif %}
 </div>
+{% endblock %}

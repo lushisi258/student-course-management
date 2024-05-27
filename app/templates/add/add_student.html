@@ -28,5 +28,11 @@ Add Student
             <input type="submit" class="form-control" id="btn-submit" value="提交">
         </div>
     </form>
+    <div class="result">
+        {% if result %}
+        <div class="result-item">
+            {{ result }}
+        </div>
+        {% endif %}
 </div>
 {% endblock %}

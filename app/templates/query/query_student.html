@@ -1,0 +1,49 @@
+{%extends "/base/student.html"%}
+{%block title%}
+Query Student
+{%endblock%}
+{%block head%}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('static',filename='css/query/query_student.css')}}">
+{%endblock%}
+{%block content%}
+<div class="main" id="query-student-content">
+    <form action="{{url_for('views.query_student')}}" method="post">
+        <div class="form-group">
+            <input type="text" class="form-control" id="student-id" name="student_id" placeholder="请输入学号">
+        </div>
+        <div class="form-group">
+            <input type="submit" class="form-control" id="btn-query-id" value="查询">
+        </div>
+    </form>
+    <form action="{{url_for('views.query_student')}}" method="post">
+        <div class="form-group">
+            <input type="text" class="form-control" id="student-name" name="student_name" placeholder="请输入姓名">
+        </div>
+        <div class="form-group">
+            <input type="submit" class="form-control" id="btn-query-name" value="查询">
+        </div>
+    </form>
+    <form action="{{url_for('views.query_student')}}" method="post">
+        <div class="form-group">
+            <input type="date" class="form-control" id="register-date" name="register_date" placeholder="请输入注册日期">
+        </div>
+        <div class="form-group">
+            <input type="submit" class="form-control" id="btn-query-date" value="查询">
+        </div>
+    </form>
+    <div class="query-result">
+        {% if students %}
+        {% for student in students %}
+        <div class="result-item">
+            学号：{{ student.student_id }} 姓名：{{ student.student_name }} 注册日期：{{ student.register_date }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="result-item">
+            没有符合条件的学生
+        </div>
+        {% endif %}
+    </div>
+</div>
+{%endblock%}
