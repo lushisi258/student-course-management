@@ -1,0 +1,38 @@
+{% extends 'base/course.html' %}
+
+{% block title %}
+Query Course
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/query/query_course.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main" id="query-course-content">
+    <form action="{{ url_for('views.query_course') }}" method="post">
+        <label for="course-id">课程编号</label>
+        <input type="text" id="course-id" name="course_id" required>
+        <button type="submit" id="query-course">查询课程</button>
+    </form>
+    <form action="{{ url_for('views.query_course') }}" method="post">
+        <label for="course-name">课程名称</label>
+        <input type="text" id="course-name" name="course_name" required>
+        <button type="submit" id="query-course">查询课程</button>
+    </form>
+    <form action="{{ url_for('views.query_course') }}" method="post">
+        <label for="course-teacher">授课教师</label>
+        <input type="text" id="course-teacher" name="course_teacher" required>
+        <button type="submit" id="query-course">查询课程</button>
+    </form>
+    <div class="query-result">
+        {% if courses %}
+        {% for course in courses %}
+        <div class="result-item">
+            课程编号：{{ course.course_id }} 课程名称：{{ course.course_name }} 授课教师：{{ course.teacher }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
