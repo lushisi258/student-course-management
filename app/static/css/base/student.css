@@ -1,10 +1,19 @@
-#student-register-year {
-    width: 80%;
-    position: relative;
-    display: block;
-    left: 50%;
-    margin-top: 5%;
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+#turn-to-add-student {
+    margin-top: 10%;
+    margin-left: 30%;
+}
+
+#turn-to-query-student {
+    margin-top: 17%;
+    margin-left: 30%;
+}
+
+#turn-to-update-student {
+    margin-top: 24%;
+    margin-left: 30%;
+}
+
+#turn-to-delete-student {
+    margin-top: 31%;
+    margin-left: 30%;
 }

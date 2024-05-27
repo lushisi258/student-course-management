@@ -11,6 +11,9 @@ Student
 
 {% block content %}
 <div class="main" id="student-content">
-  <a href="{{ url_for('views.turn_to_add_student') }}" class="button">添加学生信息</a>
+  <a href="{{ url_for('views.turn_to_add_student') }}" class="button" id="turn-to-add-student">添加学生信息</a>
+  <a href="{{ url_for('views.turn_to_query_student') }}" class="button" id="turn-to-query-student">查询学生信息</a>
+  <a href="{{ url_for('views.turn_to_update_student') }}" class="button" id="turn-to-update-student">修改学生信息</a>
+  <a href="{{ url_for('views.turn_to_delete_student') }}" class="button" id="turn-to-delete-student">删除学生信息</a>
 </div>
 {% endblock %}
