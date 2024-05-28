@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from sqlalchemy.exc import IntegrityError
 from flask import request
-from .models import db, Student, Course
+from .models import db, Student, Course, Enrollment
 
 views = Blueprint('views', __name__)
 
@@ -168,3 +168,70 @@ def query_course():
     else:
         courses = Course.query.all()
     return render_template('/query/query_course.html', courses=courses)
+
+
+'''
+有关选课的路由
+'''
+@views.route('/enrollment')
+def enrollment():
+    return render_template('/base/enrollment.html')
+# 跳转到选课页面
+@views.route('/turn_to_add_enrollment')
+def turn_to_add_enrollment():
+    return render_template('/add/add_enrollment.html')
+@views.route('/add_enrollment', methods=['POST'])
+def add_enrollment():
+    student_id = request.form.get('student_id')
+    course_id = request.form.get('course_id')
+    student = Student.query.filter_by(student_id=student_id).first()
+    course = Course.query.filter_by(course_id=course_id).first()
+    if student and course:
+        student.courses.append(course)
+        db.session.commit()
+        result = '选课成功'
+    else:
+        result = '选课失败，当前信息有误'
+    return render_template('/enrollment/enrollment.html', result=result)
+
+# 跳转到退课页面
+@views.route('/turn_to_delete_enrollment')
+def turn_to_delete_enrollment():
+    return render_template('/delete/delete_enrollment.html')
+@views.route('/delete_enrollment', methods=['POST'])
+def delete_enrollment():
+    student_id = request.form.get('student_id')
+    course_id = request.form.get('course_id')
+    student = Student.query.filter_by(student_id=student_id).first()
+    course = Course.query.filter_by(course_id=course_id).first()
+    if student and course:
+        student.courses.remove(course)
+        db.session.commit()
+        result = '退课成功'
+    else:
+        result = '退课失败，当前信息有误'
+    return render_template('/enrollment/delete_enrollment.html', result=result)
+
+# 跳转到查询选课页面
+@views.route('/turn_to_query_enrollment')
+def turn_to_query_enrollment():
+    return render_template('/query/query_enrollment.html')
+@views.route('/query_enrollment', methods=['POST'])
+def query_enrollment():
+    student_id = request.form.get('student_id')
+    course_id = request.form.get('course_id')
+    if student_id and course_id:
+        enrollments = Enrollment.query.filter_by(student_id=student_id, course_id=course_id).all()
+    elif student_id:
+        course_ids = Enrollment.query.filter_by(student_id=student_id).all()
+        courses = []
+        for course_id in course_ids:
+            courses += Course.query.filter_by(course_id=course_id.course_id).first()
+    elif course_id:
+        student_ids = Enrollment.query.filter_by(course_id=course_id).all()
+        students = []
+        for student_id in student_ids:
+            students += Student.query.filter_by(student_id=student_id.student_id).first()
+    else:
+        result = '查询失败，当前信息有误'
+    return render_template('/enrollment/query_enrollment.html', result=result, courses=courses, students=students, enrollments=enrollments)

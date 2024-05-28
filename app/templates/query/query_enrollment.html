@@ -1,0 +1,53 @@
+{% extends "/base/enrollment.html" %}
+
+{% block title %}
+QUERY ENROLLMENT
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/query/query_enrollment.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main" id="query-enrollment-content">
+  <form action="{{ url_for('views.query_enrollment') }}" method="post">
+    <div class="input-group">
+      <label for="student_id">学生ID</label>
+      <input type="text" id="student_id" name="student_id" required>
+    </div>
+    <div class="input-group">
+      <label for="course_id">课程ID</label>
+      <input type="text" id="course_id" name="course_id" required>
+    <button type="submit" class="button" id="query-enrollment">查 询</button>
+  </form>
+</div>
+<div class="query-result">
+  {% if result %}
+    <p>{{ result }}</p>
+  {% endif %}
+  {% if enrollments %}
+    {% for enrollment in enrollments %}
+      <div class="result-item">
+        学生ID：{{ enrollment.student_id }} 课程ID：{{ enrollment.course_id }} 成绩：{{ enrollment.score }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% if courses %}
+  <p>当前学生的选课信息为：</p>
+    {% for course in courses %}
+      <div class="result-item">
+        课程ID：{{ course.course_id }} 课程名称：{{ course.course_name }} 授课教师：{{ course.teacher }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% if students %}
+  <p>选择当前课程的学生有：</p>
+    {% for student in students %}
+      <div class="result-item">
+        学生ID：{{ student.student_id }} 学生姓名：{{ student.student_name }} 入学日期：{{ student.register_date }}
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "/base/enrollment.html" %}
+
+{% block title %}
+DELETE ENROLLMENT
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/delete/delete_enrollment.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main" id="delete-enrollment-content">
+  <form action="{{ url_for('views.delete_enrollment') }}" method="post">
+    <div class="input-group">
+      <label for="student_id">学生ID</label>
+      <input type="text" id="student_id" name="student_id" required>
+    </div>
+    <div class="input-group">
+      <label for="course_id">课程ID</label>
+      <input type="text" id="course_id" name="course_id" required>
+    <button type="submit" class="button" id="delete-enrollment">退 课</button>
+  </form>
+</div>
+<div class="result">
+  {% if result %}
+    <p>{{ result }}</p>
+  {% endif %}
+{% endblock %}

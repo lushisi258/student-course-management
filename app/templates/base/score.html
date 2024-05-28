@@ -1,0 +1,17 @@
+{% extends "/base/index.html" %}
+
+{% block title %}
+Score
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base/score.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main" id="score-content">
+  <a href="{{ url_for('views.turn_to_add_score') }}" class="button" id="turn-to-add-score">录入成绩信息</a>
+  <a href="{{ url_for('views.turn_to_query_score') }}" class="button" id="turn-to-query-score">查询成绩信息</a>
+  <a href="{{ url_for('views.turn_to_update_score') }}" class="button" id="turn-to-update-score">修改成绩信息</a>
+  <a href="{{ url_for('views.turn_to_delete_score') }}" class="button" id="turn-to-delete-score">删除成绩信息</a>

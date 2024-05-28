@@ -1,0 +1,18 @@
+{% extends "/base/index.html" %}
+
+{% block title %}
+Enrollment
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base/enrollment.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="main" id="enrollment-content">
+  <a href="{{ url_for('views.turn_to_add_enrollment') }}" class="button" id="turn-to-add-enrollment">选 课</a>
+  <a href="{{ url_for('views.turn_to_query_enrollment') }}" class="button" id="turn-to-query-enrollment">查询选课信息</a>
+  <a href="{{ url_for('views.turn_to_delete_enrollment') }}" class="button" id="turn-to-delete-enrollment">退 课</a>
+</div>
+{% endblock %}
