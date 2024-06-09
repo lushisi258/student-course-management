@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template
-from sqlalchemy.exc import IntegrityError
-from flask import request
-from .models import db, Student, Course, Enrollment
+from flask import Blueprint, render_template, request
+from pymysql.err import OperationalError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy import text
+from .models import db, Student, Course, Enrollment, StudentCourseScores
 
 views = Blueprint('views', __name__)
 
@@ -30,9 +31,9 @@ def add_student():
         db.session.add(new_student)
         db.session.commit()
         result = '学生添加成功'
-    except IntegrityError:
+    except Exception as e:
         db.session.rollback()
-        result = '添加失败，学生信息已存在'
+        result = '添加失败: 出现错误'
     return render_template('/add/add_student.html', result=result)
 
 # 跳转到修改学生页面
@@ -44,15 +45,17 @@ def update_student():
     student_id = request.form.get('student_id')
     student_name = request.form.get('student_name')
     register_date = request.form.get('register_date')
-    student = Student.query.filter_by(student_id=student_id).first()
-    if student:
-        student.student_name = student_name
-        student.register_date = register_date
-        db.session.commit()
-        result='学生信息修改成功'
+    # 调用存储过程
+    sql = text("CALL UpdateStudentInfo(:student_id, :student_name, :register_date)")
+    result = db.session.execute(sql, {'student_id': student_id, 'student_name': student_name, 'register_date': register_date}).fetchone()
+    # 检查存储过程的返回结果
+    if result[0] == 'cannot update student info with empty student name':
+        # 如果学生姓名为空，则不提交事务，并返回错误消息
+        db.session.rollback()
     else:
-        result='学生信息不存在'
-    return render_template('update/update_student.html', result=result)
+        # 如果没有错误，提交事务
+        db.session.commit()
+    return render_template('update/update_student.html', result=result[0])
 
 # 跳转到删除学生页面
 @views.route('/turn_to_delete_student')
@@ -61,13 +64,22 @@ def turn_to_delete_student():
 @views.route('/delete_student', methods=['POST'])
 def delete_student():
     student_id = request.form.get('student_id')
-    student = Student.query.filter_by(student_id=student_id).first()
-    if student:
-        db.session.delete(student)
+    try:
+        # 开始事务
+        db.session.begin()
+        # 删除该学生的所有选课记录
+        Enrollment.query.filter_by(student_id=student_id).delete()
+        # 删除学生记录
+        student = Student.query.get(student_id)
+        if student:
+            db.session.delete(student)
+        # 提交事务
         db.session.commit()
-        result = '学生删除成功'
-    else:
-        result = '学生信息不存在'
+        result = "成功删除学生信息"
+    except SQLAlchemyError as e:
+        # 如果出现错误，回滚事务
+        db.session.rollback()
+        result = "出错了 :( " + str(e)
     return render_template('/delete/delete_student.html', result=result)
 
 # 跳转到查询学生页面
@@ -140,14 +152,14 @@ def turn_to_delete_course():
     return render_template('/delete/delete_course.html')
 @views.route('/delete_course', methods=['POST'])
 def delete_course():
+    result = '课程信息不存在'
     course_id = request.form.get('course_id')
     course = Course.query.filter_by(course_id=course_id).first()
     if course:
         db.session.delete(course)
         db.session.commit()
         result = '课程删除成功'
-    else:
-        result = '课程信息不存在'
+        print('课程删除成功')
     return render_template('/delete/delete_course.html', result=result)
 
 # 跳转到查询课程页面
@@ -156,6 +168,7 @@ def turn_to_query_course():
     return render_template('/query/query_course.html')
 @views.route('/query_course', methods=['POST'])
 def query_course():
+    result = '查询成功'
     if request.form.get('course_id'):
         course_id = request.form.get('course_id')
         courses = Course.query.filter_by(course_id=course_id).all()
@@ -167,7 +180,10 @@ def query_course():
         courses = Course.query.filter_by(teacher=teacher).all()
     else:
         courses = Course.query.all()
-    return render_template('/query/query_course.html', courses=courses)
+    if not courses:
+        result = '查询失败，当前信息有误'
+        return render_template('/query/query_course.html', result=result)
+    return render_template('/query/query_course.html', result=result, courses=courses)
 
 
 '''
@@ -220,18 +236,24 @@ def turn_to_query_enrollment():
 def query_enrollment():
     student_id = request.form.get('student_id')
     course_id = request.form.get('course_id')
+    # 初始化结果
+    courses = []
+    students = []
+    enrollments = []
+    scores = []
+    result = '查询成功'
     if student_id and course_id:
         enrollments = Enrollment.query.filter_by(student_id=student_id, course_id=course_id).all()
     elif student_id:
         course_ids = Enrollment.query.filter_by(student_id=student_id).all()
-        courses = []
         for course_id in course_ids:
-            courses += Course.query.filter_by(course_id=course_id.course_id).first()
+            courses.append(Course.query.filter_by(course_id=course_id.course_id).first())
     elif course_id:
         student_ids = Enrollment.query.filter_by(course_id=course_id).all()
-        students = []
         for student_id in student_ids:
-            students += Student.query.filter_by(student_id=student_id.student_id).first()
+            students.append(Student.query.filter_by(student_id=student_id.student_id).first())
     else:
+        scores = StudentCourseScores.query.all()
+    if (not courses) and (not students) and (not enrollments) and (not scores):
         result = '查询失败，当前信息有误'
-    return render_template('/enrollment/query_enrollment.html', result=result, courses=courses, students=students, enrollments=enrollments)
+    return render_template('/query/query_enrollment.html', result=result, courses=courses, students=students, enrollments=enrollments, scores = scores)

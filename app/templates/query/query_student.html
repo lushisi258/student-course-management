@@ -1,11 +1,14 @@
 {%extends "/base/student.html"%}
+
 {%block title%}
 Query Student
 {%endblock%}
+
 {%block head%}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('static',filename='css/query/query_student.css')}}">
 {%endblock%}
+
 {%block content%}
 <div class="main" id="query-student-content">
     <form action="{{url_for('views.query_student')}}" method="post">
@@ -39,6 +42,7 @@ Query Student
             学号：{{ student.student_id }} 姓名：{{ student.student_name }} 注册日期：{{ student.register_date }}
         </div>
         {% endfor %}
+        {% endif %}
     </div>
 </div>
 {%endblock%}

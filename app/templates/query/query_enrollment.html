@@ -14,11 +14,11 @@ QUERY ENROLLMENT
   <form action="{{ url_for('views.query_enrollment') }}" method="post">
     <div class="input-group">
       <label for="student_id">学生ID</label>
-      <input type="text" id="student_id" name="student_id" required>
+      <input type="text" id="student_id" name="student_id">
     </div>
     <div class="input-group">
       <label for="course_id">课程ID</label>
-      <input type="text" id="course_id" name="course_id" required>
+      <input type="text" id="course_id" name="course_id">
     <button type="submit" class="button" id="query-enrollment">查 询</button>
   </form>
 </div>
@@ -46,6 +46,14 @@ QUERY ENROLLMENT
     {% for student in students %}
       <div class="result-item">
         学生ID：{{ student.student_id }} 学生姓名：{{ student.student_name }} 入学日期：{{ student.register_date }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% if scores %}
+  <p>当前课程的成绩为：</p>
+    {% for score in scores %}
+      <div class="result-item">
+        学生：{{ score.student_name }} 课程：{{ score.course_name }}   成绩：{{ score.score }}
       </div>
     {% endfor %}
   {% endif %}
